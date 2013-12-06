@@ -32,4 +32,4 @@ http.createServer(function (req, res) {
   } else {
     sendFile(path.resolve(__dirname, 'file.txt'), res);
   }
-}).listen(80);
+}).listen(process.env.PORT || 3000);
