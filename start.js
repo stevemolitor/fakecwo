@@ -12,7 +12,7 @@ function sendFile(file, res) {
   if (cache[file]) {
     return setTimeout(function () {
       res.end(cache[file]);
-    });
+    }, LATENCY);
   }
 
   fs.readFile(file, function (err, data) {
@@ -32,4 +32,4 @@ http.createServer(function (req, res) {
   } else {
     sendFile(path.resolve(__dirname, 'file.txt'), res);
   }
-}).listen(3000);
+}).listen(80);

@@ -1,0 +1,8 @@
+{
+  "name": "fakecwo",
+  "description": "Fake server for load testing",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node ./start.js"
+  }
+}
