@@ -28,10 +28,16 @@ function sendFile(file, res) {
   });
 }
 
-http.createServer(function (req, res) {
-  if (req.url.match(/\.html$/)) {
-    sendFile(path.resolve(__dirname, 'file.html'), res);
-  } else {
-    sendFile(path.resolve(__dirname, 'file.txt'), res);
+if (cluster.isMaster) {
+  for (var i = 0; i < numCpus.length; i++) {
+    cluster.fork();
   }
-}).listen(process.env.PORT || 3000);
+} else {
+  http.createServer(function (req, res) {
+    if (req.url.match(/\.html$/)) {
+      sendFile(path.resolve(__dirname, 'file.html'), res);
+    } else {
+      sendFile(path.resolve(__dirname, 'file.txt'), res);
+    }
+  }).listen(process.env.PORT || 3000);
+}
