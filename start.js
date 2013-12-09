@@ -29,15 +29,19 @@ function sendFile(file, res) {
 }
 
 if (cluster.isMaster) {
-  for (var i = 0; i < numCpus.length; i++) {
+  for (var i = 0; i < numCpus; i++) {
     cluster.fork();
   }
 } else {
+  console.log('child');
   http.createServer(function (req, res) {
+    console.log('request');
     if (req.url.match(/\.html$/)) {
       sendFile(path.resolve(__dirname, 'file.html'), res);
     } else {
       sendFile(path.resolve(__dirname, 'file.txt'), res);
     }
-  }).listen(process.env.PORT || 3000);
+  }).listen(process.env.PORT || 3000, function () {
+    console.log('child listening');
+  });
 }
