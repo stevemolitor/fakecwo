@@ -1,6 +1,10 @@
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
+var cluster = require('cluster');
+var os = require('os');
+
+var numCpus = os.cpus().length;
 
 var LATENCY = 10;
 
@@ -10,9 +14,7 @@ function sendFile(file, res) {
   res.writeHead(200);
 
   if (cache[file]) {
-    return setTimeout(function () {
-      res.end(cache[file]);
-    }, LATENCY);
+    return res.end(cache[file]);
   }
 
   fs.readFile(file, function (err, data) {
